@@ -223,12 +223,22 @@ class Lm32(Architecture):
 
 	endianness = binaryninja.enums.Endianness.BigEndian
 
-	address_size = 4
-	default_int_size = 4
-	instr_alignment = 4
-	max_instr_length = 4
+	# address_size = 4
+	# default_int_size = 4
+	# instr_alignment = 4
+	# max_instr_length = 4
 
+	# general purpose registers
 	regs = {i:RegisterInfo(i, 4) for i in LM32_GPR}
+
+	# control status registers
+	regs.extend({
+		"pc": RegisterInfo("pc", 4), # not indexed
+	})
+
+	regs.extend({
+		"IE": RegisterInfo("IE", 4), # 0
+	})
 
 	stack_pointer = 'sp'
 
@@ -263,6 +273,22 @@ class Lm32(Architecture):
 
 	def get_instruction_low_level_il(self, data, addr, il):
 		pass
+
+	@property
+	def address_size(self):
+		return 4 # 32 bit
+
+	@property
+	def default_int_size(self):
+		return 4
+
+	@property
+	def instr_alignment(self):
+		return 4
+
+	@property
+	def max_instr_length(self):
+		return 4
 
 
 Lm32.register()
